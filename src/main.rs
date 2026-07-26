@@ -170,7 +170,12 @@ fn main() {
             Ok(meta) if meta.is_dir() => Box::new(
                 walkdir::WalkDir::new(path)
                     .into_iter()
-                    .filter_entry(is_visible)
+                    .filter_entry(|entry| {
+                        // not hidden, or
+                        is_visible(entry) ||
+                            // was passed explicitly
+                            entry.file_name().to_str() == Some(path)
+                    })
                     .map(Result::unwrap)
                     .filter(|entry| {
                         entry.file_type().is_file()
