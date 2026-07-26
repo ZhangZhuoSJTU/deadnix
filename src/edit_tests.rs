@@ -210,3 +210,11 @@ fn attrset_no_trailing_comma() {
         "{ bar }: bar"
     );
 }
+
+#[test]
+fn attrset_all_unused() {
+    has_edits!(
+        "{ bar, foo }: 1",
+        "{ }: 1"
+    );
+}

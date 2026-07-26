@@ -17,7 +17,9 @@ fn apply_edits<'a>(src: &str, edits: impl Iterator<Item = &'a Edit>) -> String {
     let mut result = String::with_capacity(src.len());
     for edit in edits {
         if pos <= edit.end {
-            result.push_str(&src[pos..edit.start]);
+            if pos < edit.start {
+                result.push_str(&src[pos..edit.start]);
+            }
             result.push_str(&edit.replacement);
             pos = edit.end;
         }
